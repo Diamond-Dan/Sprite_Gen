@@ -73,7 +73,7 @@ if not saved:
     filename = simpledialog.askstring("Filename", "Enter a name for the XML file:")
 
     # Write the XML document to a file
-    if filename!=None or "":
+    if filename != None or "":
         tree = ET.ElementTree(xml_root)
         current_file_path = os.path.dirname(os.path.realpath(__file__))
         file_path = os.path.join(current_file_path, 'patterns', f"{filename}.xml")
