@@ -284,7 +284,7 @@ if __name__ == '__main__':
     seed=3
     pixel_number=300
     wiggle=1
-    xml='tie_fighter.oxs'
+    xml='rockball.xml'
     pixel_size=1
     file_name="asteroid"
     server_mode=False
