@@ -1,9 +1,10 @@
 # pylint: disable=no-member
-import pygame
 import xml.etree.ElementTree as ET
 import tkinter as tk
 import os
 from tkinter import simpledialog
+import pygame
+
 # Initialize Pygame
 pygame.init()
 
@@ -44,21 +45,25 @@ while not done:
                 # Add the mouse position to the XML document
                 pos = ET.SubElement(xml_root, "partstitch")
                 # divide by 10 to scale down to 100x100
-                pos.set("x", str(round(event.pos[0]/10)))
-                pos.set("y", str(round(event.pos[1]/10)))
+                pos.set("x", str(round(event.pos[0] / 10)))
+                pos.set("y", str(round(event.pos[1] / 10)))
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_s:
                 # The 's' key was pressed! Show the save dialog.
                 root = tk.Tk()
                 root.withdraw()  # Hide the main window
-                filename = simpledialog.askstring("Filename", "Enter a name for the XML file:")
+                filename = simpledialog.askstring(
+                    "Filename", "Enter a name for the XML file:"
+                )
                 if filename:
                     tree = ET.ElementTree(xml_root)
                     current_file_path = os.path.dirname(os.path.realpath(__file__))
-                    file_path = os.path.join(current_file_path, 'patterns', f"{filename}.xml")
+                    file_path = os.path.join(
+                        current_file_path, "patterns", f"{filename}.xml"
+                    )
                     tree.write(file_path)
                     saved = True
-#  Go ahead and update the screen with what we've drawn
+    #  Go ahead and update the screen with what we've drawn
     pygame.display.flip()
 
     #  Limit to 120 frames per second
@@ -76,7 +81,7 @@ if not saved:
     if filename != None or "":
         tree = ET.ElementTree(xml_root)
         current_file_path = os.path.dirname(os.path.realpath(__file__))
-        file_path = os.path.join(current_file_path, 'patterns', f"{filename}.xml")
+        file_path = os.path.join(current_file_path, "patterns", f"{filename}.xml")
         tree.write(file_path)
         saved = True
 
