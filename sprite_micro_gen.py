@@ -1,11 +1,11 @@
 import random
 import math
-import imageio.v2 as imageio
 import os
 import sys
 import xml.etree.ElementTree as ET
 from PIL import Image, ImageDraw
-
+import draw_sprite_animations as dsa
+import saving as save
 
 def main(
     start_x,
@@ -40,14 +40,14 @@ def main(
         )
 
     for i in range(frames):
-        name, server_name = draw_image_guided_wiggle(
+        name, server_name = dsa.draw_image_guided_wiggle(
             guide_array_x, guide_array_y, color_array, i, wiggle, pixel_size, file_name
         )
         if server_name != "":
             filename.append(name)
             server_file_wiggle_name.append(server_name)
     for i in range(frames):
-        name_2, server_name = draw_image_guided_explode(
+        name_2, server_name = dsa.draw_image_guided_explode(
             int_x,
             int_y,
             guide_array_x,
@@ -61,178 +61,13 @@ def main(
         if server_name != "":
             filename_2.append(name_2)
         server_file_explode_name.append(server_name)
-    gif_loc_1 = gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount)
-    gif_loc_2 = gif_maker(
+    gif_loc_1 = save.gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount)
+    gif_loc_2 = save.gif_maker(
         filename_2, cur_file_loc, seed, pixel_number, frames, filecount
     )
     if server_mode == True:
         return server_file_wiggle_name, server_file_explode_name, gif_loc_1, gif_loc_2
 
-
-def gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount):
-    images = []
-
-    for i in range(len(filename)):
-        if filename[i] != "":
-            images.append(imageio.imread(filename[i]))
-
-    gif_name = (
-        cur_file_loc
-        + "\\gifs\\movie_"
-        + "seed_"
-        + str(seed)
-        + "pixel_"
-        + str(pixel_number)
-        + "frames_"
-        + str(frames)
-        + str(filecount)
-        + ".gif"
-    )
-    server_gif_name = (
-        "movie_"
-        + "seed_"
-        + str(seed)
-        + "pixel_"
-        + str(pixel_number)
-        + "frames_"
-        + str(frames)
-        + str(filecount)
-        + ".gif"
-    )
-    while os.path.isfile(gif_name):
-        filecount += 1
-        gif_name = (
-            cur_file_loc
-            + "\\gifs\\movie_"
-            + "seed_"
-            + str(seed)
-            + "pixel_"
-            + str(pixel_number)
-            + "frames_"
-            + str(frames)
-            + str(filecount)
-            + ".gif"
-        )
-
-    imageio.mimsave(gif_name, images, "GIF", disposal=2, loop=0)
-
-    while os.path.isfile(server_gif_name):
-        filecount += 1
-        server_gif_name = (
-            "movie_"
-            + "seed_"
-            + str(seed)
-            + "pixel_"
-            + str(pixel_number)
-            + "frames_"
-            + str(frames)
-            + str(filecount)
-            + ".gif"
-        )
-    return server_gif_name
-
-
-def image_saver(img, file_name):
-    filecount = 0
-    name = ""
-    server_name = ""
-    cur_file_loc = os.path.dirname(os.path.realpath(__file__))
-    while os.path.isfile(
-        cur_file_loc + "\\Images\\" + file_name + str(filecount) + ".png"
-    ):
-        filecount += 1
-        name = cur_file_loc + "\\Images\\" + file_name + str(filecount) + ".png"
-        server_name = file_name + str(filecount) + ".png"
-        print(server_name)
-    img.save(cur_file_loc + "\\Images\\" + file_name + str(filecount) + ".png")
-
-    return name, server_name
-
-
-def draw_image_guided_wiggle(
-    guide_array_x, guide_array_y, color_array, frame_num, wiggle, pixel_size, file_name
-):
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-    for i in range(len(guide_array_x)):
-        new_x = guide_array_x[i] + (random.randint(-wiggle, wiggle))
-        new_y = guide_array_y[i] + (random.randint(-wiggle, wiggle))
-        if new_x < 10:
-            new_x += 10
-        if new_x > 90:
-            new_x -= 10
-        if new_y < 10:
-            new_y += 10
-        if new_y > 90:
-            new_y -= 10
-        draw.rectangle(
-            (new_x, new_y, new_x + pixel_size, new_y + pixel_size),
-            fill=(
-                color_array[i * 4],
-                color_array[i * 4 + 1],
-                color_array[i * 4 + 2],
-                color_array[i * 4 + 3],
-            ),
-        )
-    file_name = file_name + "_wiggle"
-    name, server_name = image_saver(img, file_name)
-    return name, server_name
-
-
-def draw_image_guided_explode(
-    int_x,
-    int_y,
-    guide_array_x,
-    guide_array_y,
-    color_array,
-    frame_num,
-    wiggle,
-    pixel_size,
-    file_name,
-):
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
-    draw = ImageDraw.Draw(img)
-    draw.rectangle(
-        (
-            guide_array_x[0],
-            guide_array_y[0],
-            guide_array_x[0] + pixel_size,
-            guide_array_y[0] + pixel_size,
-        ),
-        fill=(color_array[0], color_array[1], color_array[2], color_array[3]),
-    )
-    if frame_num > 0:
-        high_wiggle = frame_num + wiggle
-    else:
-        high_wiggle = wiggle
-    for i in range(len(guide_array_x)):
-        if guide_array_x[i] < int_x and guide_array_y[i] < int_y:  # bottom left
-            new_x = guide_array_x[i] - random.randint(wiggle, high_wiggle)
-            new_y = guide_array_y[i] - random.randint(wiggle, high_wiggle)
-        elif guide_array_x[i] < int_x and guide_array_y[i] > int_y:  # top left
-            new_x = guide_array_x[i] - random.randint(wiggle, high_wiggle)
-            new_y = guide_array_y[i] + random.randint(wiggle, high_wiggle)
-        elif guide_array_x[i] > int_x and guide_array_y[i] > int_y:  # top right
-            new_x = guide_array_x[i] + random.randint(wiggle, high_wiggle)
-            new_y = guide_array_y[i] + random.randint(wiggle, high_wiggle)
-        elif guide_array_x[i] > int_x and guide_array_y[i] < int_y:  # bottom right
-            new_x = guide_array_x[i] + random.randint(wiggle, high_wiggle)
-            new_y = guide_array_y[i] - random.randint(wiggle, high_wiggle)
-        else:
-            new_x = guide_array_x[i]
-            new_y = guide_array_y[i]
-        draw.rectangle(
-            (new_x, new_y, new_x + pixel_size, new_y + pixel_size),
-            fill=(
-                color_array[i * 4],
-                color_array[i * 4 + 1],
-                color_array[i * 4 + 2],
-                color_array[i * 4 + 3],
-            ),
-        )
-    file_name = file_name + "_explode"
-    name, server_name = image_saver(img, file_name)
-    return name, server_name
 
 
 def draw_random_image_intial(x, y, seed, pixel_number, file_name, pixel_size):
@@ -302,7 +137,7 @@ def draw_random_image_intial(x, y, seed, pixel_number, file_name, pixel_size):
         )
         i += 1
 
-    image_saver(img, file_name)
+    save.image_saver(img, file_name)
     return array_x, array_y, random_color_array
 
 
@@ -364,7 +199,7 @@ def draw_xml_image(x, y, file_name):
 
     for i in range(len(x)):
         draw.rectangle((x[i], y[i], x[i] + 5, y[i] + 5), fill=(255, 0, 0, 255))
-    image_saver(img, file_name)
+    save.image_saver(img, file_name)
 
 
 def draw_planet(x, y, seed, pixel_number, file_name, pixel_size):
@@ -404,7 +239,7 @@ def draw_planet(x, y, seed, pixel_number, file_name, pixel_size):
         )
     # print(array_x,array_y)
 
-    image_saver(img, file_name)
+    save.image_saver(img, file_name)
     return array_x, array_y, random_color_array
 
 
@@ -498,10 +333,3 @@ if __name__ == "__main__":
             sys.exit()
         else:
             print("Invalid input")
-    # i=0
-    # while i<10:
-    #     main(count,i,pixel_number)
-    #     count=random.randint(25,50)
-    #     seed=random.randint(0,100)
-    #     pixel_number=random.randint(100,500)
-    #     i+=1
