@@ -1,3 +1,4 @@
+"""draws images with guided effects"""
 import random
 from PIL import Image, ImageDraw
 import saving as save
@@ -7,6 +8,7 @@ import saving as save
 def draw_image_guided_wiggle(
     guide_array_x, guide_array_y, color_array, frame_num, wiggle, pixel_size, file_name
 ):
+    """Draws an image with a guided wiggle effect."""
     img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     for i in range(len(guide_array_x)):
@@ -45,6 +47,7 @@ def draw_image_guided_explode(
     pixel_size,
     file_name,
 ):
+    """Draws an image with a guided explode effect."""
     img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     draw.rectangle(

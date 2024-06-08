@@ -1,7 +1,9 @@
+"""contains functions for saving images and gifs."""
 import os
 import imageio.v2 as imageio
 
 def gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount):
+    """Creates a gif from a list of images."""
     images = []
 
     for i in range(len(filename)):
@@ -65,6 +67,7 @@ def gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount):
 
 
 def image_saver(img, file_name):
+    """Saves an image to the Images folder."""
     filecount = 0
     name = ""
     server_name = ""

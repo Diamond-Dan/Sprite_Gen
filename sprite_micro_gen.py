@@ -1,8 +1,10 @@
+"""Basic UI and main function for the sprite micro generator."""
 import os
 import sys
 import draw_sprite_animations as dsa
 import draw_initial as init_draw
 import saving as save
+
 
 def main(
     start_x,
@@ -17,6 +19,7 @@ def main(
     file_name,
     server_mode,
 ):
+    """Main function for the sprite micro generator."""
     int_x = start_x
     int_y = start_y
     filename = []
@@ -69,7 +72,7 @@ def main(
 
 
 if __name__ == "__main__":
-
+    """Terminal interface for the sprite micro generator."""
     mode = "0"
     count = 25
     start_x = 50

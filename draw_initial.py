@@ -1,3 +1,4 @@
+"""Creates initial images"""
 import random
 import math
 import os
