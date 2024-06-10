@@ -5,169 +5,197 @@ import os
 from tkinter import simpledialog
 import pygame 
 import pygame_textinput
-# Initialize Pygame
-pygame.init()
-
-saved = False
-# Set the width and height of the screen (width, height)
-size = (1200, 1000)  # draw on large grid which will later be scaled to 100x100
-screen = pygame.display.set_mode(size)
-section = pygame.Surface((200, 1000))
-section.fill((100, 255, 255))
-
-# Set the title of the window
-pygame.display.set_caption("Mouse Movement Tracker")
-
-# Loop until the user clicks the close button
-done = False
-
-# Used to manage how fast the screen updates
-clock = pygame.time.Clock()
-
-# Variable to track whether the mouse button is down
-mouse_down = False
-
-# Create the root element for the XML document
-xml_root = ET.Element("root")
-
-color = [255, 255, 255]
-# Set initial positions for the text inputs
-positions = [(10, 10), (10, 60), (10, 110)]
-font = pygame.font.Font(None, 32)
-color_fonts =[0,0,0]
-for i, color_font in enumerate(color_fonts):
-    color_fonts[i] = font.render(str(color[i]), True, (255, 0, 0))
-print(color_fonts[0])
 
 
+def main():
+    # Initialize Pygame
+    pygame.init()
+    #DO NOT FORGET TO ADJUST FOR 1200x1000 frame in XML
+    saved = False
+    # Set the width and height of the screen (width, height)
+    size = (1200, 1000)  # draw on large grid which will later be scaled to 100x100
+    screen = pygame.display.set_mode(size)
+    section = pygame.Surface((10, 1000))
+    section.fill((100, 255, 255))
+    section_background = pygame.Surface((190, 1000))
+    section_background.fill((200, 200, 200))
 
-preview_rect = pygame.Rect(10, 200, 50, 50)
-text_inputs = [pygame_textinput.TextInputVisualizer() for _ in range(3)]
-text_rects = [pygame.Rect(10, 10, 140, 32) for _ in range(3)]
-for i, pos in enumerate(positions):
-    text_rects[i].topleft = pos
-    text_rects[i].size = (140, 32)
+    # Set the title of the window
+    pygame.display.set_caption("Mouse Movement Tracker")
 
-for i, text_input in enumerate(text_inputs):
-    text_inputs[i].manager.input_string = color[i]
+    # Loop until the user clicks the close button
+    done = False
 
-screen.fill((255, 255, 255))
-menu=False
-rect_selected = -1
-while not done:
-    
-    events = pygame.event.get()
-    #  Main event loop
-    for event in events:
-        #put in section
-        screen.blit(section, (0, 0))
-        screen.blit(color_fonts[0], positions[0])
-        screen.blit(color_fonts[1], positions[1])
-        screen.blit(color_fonts[2], positions[2])
-        if event.type == pygame.QUIT:  # User clicked close
-            done = True
-        if not menu:
-            if event.type == pygame.MOUSEBUTTONDOWN:  # Mouse button pressed
-                mouse_down = True
-            elif event.type == pygame.MOUSEBUTTONUP:  # Mouse button released
-                mouse_down = False
-            elif event.type == pygame.MOUSEMOTION:  # Mouse moved
-                if mouse_down:
-                    # Draw a red dot at the mouse position
-                    pygame.draw.circle(screen, (255, 0, 0), event.pos, 10)
+    # Used to manage how fast the screen updates
+    clock = pygame.time.Clock()
 
-                    # Add the mouse position to the XML document
-                    pos = ET.SubElement(xml_root, "partstitch")
-                    # divide by 10 to scale down to 100x100
-                    pos.set("x", str(round(event.pos[0] / 10)))
-                    pos.set("y", str(round(event.pos[1] / 10)))
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_s:
-                    # The 's' key was pressed! Show the save dialog.
-                    root = tk.Tk()
-                    root.withdraw()  # Hide the main window
-                    filename = simpledialog.askstring(
-                        "Filename", "Enter a name for the XML file:"
-                    )
-                    if filename:
-                        tree = ET.ElementTree(xml_root)
-                        current_file_path = os.path.dirname(os.path.realpath(__file__))
-                        file_path = os.path.join(
-                            current_file_path, "patterns", f"{filename}.xml"
-                        )
-                        tree.write(file_path)
-                        saved = True
-    # Update text inputs
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_RETURN and not menu:
-                menu=True
-            
-            elif event.key == pygame.K_RETURN and menu:
-                menu=False
-        if menu:
-            
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = pygame.mouse.get_pos()
-                for i, text_input in enumerate(text_rects):
-                # Check if the text input box was clicked
-                    
-                    if text_rects[i].collidepoint(x, y):
-                        rect_selected = i
-                        # Set focus to the clicked text input box
-                        focus = i
+    # Variable to track whether the mouse button is down
+    mouse_down = False
 
-        if rect_selected == 0:
-            
-            pygame.draw.rect(screen, (255, 0, 0), text_rects[0], 2)
-            
-        elif rect_selected == 1:
-            pygame.draw.rect(screen, (255, 0, 0), text_rects[1], 2)
-           
-        elif rect_selected == 2:
-            pygame.draw.rect(screen, (255, 0, 0), text_rects[2], 2)
-           
-                 
-            # for i, text_input in enumerate(text_inputs):
-            #     if text_input.update(events):
-            #         try:
-            #             # Try to convert the text input to an integer
-            #             color[i] = int(text_input.get_text())
-            #         except ValueError:
-            #             pass  # Invalid integer, ignore it
+    # Create the root element for the XML document
+    xml_root = ET.Element("root")
 
-                
-   
-    # Draw each input field at its corresponding position
-        for i, text_input in enumerate(text_inputs):
-            screen.blit(text_input.surface, positions[i])
+    color = [255, 255, 255]
+    # Set initial positions for the text inputs
+    positions = [(10, 10), (10, 60), (10, 110)]
+    font = pygame.font.Font(None, 32)
+    color_fonts =[0,0,0]
+    for i, color_font in enumerate(color_fonts):
+        color_fonts[i] = font.render(str(color[i]), True, (255, 0, 0))
+    print(color_fonts[0])
 
 
 
+    preview_rect = pygame.Rect(10, 200, 50, 50)
+    text_inputs = [pygame_textinput.TextInputVisualizer() for _ in range(3)]
+    text_rects = [pygame.Rect(10, 10, 140, 32) for _ in range(3)]
+    for i, pos in enumerate(positions):
+        text_rects[i].topleft = pos
+        text_rects[i].size = (140, 32)
 
+    for i, text_input in enumerate(text_inputs):
+        text_inputs[i].manager.input_string = color[i]
+
+    screen.fill((255, 255, 255))
+    menu=False
+    rect_selected = -1
+    while not done:
         
-    # Draw a preview of the pattern in the top left corner
-    pygame.draw.rect(screen, (color[0], color[1], color[2]), preview_rect)
-    #  Go ahead and update the screen with what we've drawn
-    pygame.display.flip()
+        events = pygame.event.get()
+        #  Main event loop
+        for event in events:
+            #put in section
+            screen.blit(section, (190, 0))
+            screen.blit(section_background, (0, 0))
+            screen.blit(color_fonts[0], positions[0])
+            screen.blit(color_fonts[1], positions[1])
+            screen.blit(color_fonts[2], positions[2])
+            if event.type == pygame.QUIT:  # User clicked close
+                done = True
+            if not menu:
+                if event.type == pygame.MOUSEBUTTONDOWN:  # Mouse button pressed
+                    mouse_down = True
+                elif event.type == pygame.MOUSEBUTTONUP:  # Mouse button released
+                    mouse_down = False
+                elif event.type == pygame.MOUSEMOTION:  # Mouse moved
+                    if mouse_down:
+                        
+                        if event.pos[0] > 200 and event.pos[0]<1200:
+                            if event.pos[1] > 0 and event.pos[1]<1000:
+                                print(event.pos)        
+                                # Draw a red dot at the mouse position
+                                pygame.draw.circle(screen, color, event.pos, 10)
 
-    #  Limit to 120 frames per second
-    clock.tick(120)
+                                # Add the mouse position to the XML document
+                                pos = ET.SubElement(xml_root, "partstitch")
+                                # divide by 10 to scale down to 100x100
+                                pos.set("x", str(round((event.pos[0]-200) / 10)))
+                                pos.set("y", str(round(event.pos[1] / 10)))
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_s:
+                        # The 's' key was pressed! Show the save dialog.
+                        root = tk.Tk()
+                        root.withdraw()  # Hide the main window
+                        filename = simpledialog.askstring(
+                            "Filename", "Enter a name for the XML file:"
+                        )
+                        if filename:
+                            tree = ET.ElementTree(xml_root)
+                            current_file_path = os.path.dirname(os.path.realpath(__file__))
+                            file_path = os.path.join(
+                                current_file_path, "patterns", f"{filename}.xml"
+                            )
+                            tree.write(file_path)
+                            saved = True
+        # Update text inputs
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN and not menu:
+                    menu=True
+                
+                elif event.key == pygame.K_RETURN and menu:
+                    menu=False
+            if menu:
+                
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    x, y = pygame.mouse.get_pos()
+                    for i, text_input in enumerate(text_rects):
+                    # Check if the text input box was clicked
+                        
+                        if text_rects[i].collidepoint(x, y):
+                            rect_selected = i
+                            # Set focus to the clicked text input box
+                     
 
-# Create a Tkinter window to get the filename
-root = tk.Tk()
-root.withdraw()  # Hide the main window
+            if rect_selected == 0:
+                
+                pygame.draw.rect(screen, (255, 0, 0), text_rects[0], 2)
+                new_color = color_select()
+                if new_color is not None:
+                    color[0] = int(new_color)
+                    color_fonts[0] = font.render(str(color[0]), True, (255, 0, 0))
+                    rect_selected = -1
+            elif rect_selected == 1:
+                pygame.draw.rect(screen, (255, 0, 0), text_rects[1], 2)
+                new_color = color_select()
+                if new_color is not None:
+                    color[1] = int(new_color)
+                    color_fonts[1] = font.render(str(color[1]), True, (255, 0, 0))
+                    rect_selected = -1
+            elif rect_selected == 2:
+                pygame.draw.rect(screen, (255, 0, 0), text_rects[2], 2)
+                new_color = color_select()
+                if new_color is not None:
+                    color[2] = int(new_color)
+                    color_fonts[2] = font.render(str(color[2]), True, (255, 0, 0))
+                    rect_selected = -1
+            
+                    
 
-# Show a simple dialog asking for the filename
-if not saved:
-    filename = simpledialog.askstring("Filename", "Enter a name for the XML file:")
+                    
+    
 
-    # Write the XML document to a file
-    if filename != None or "":
-        tree = ET.ElementTree(xml_root)
-        current_file_path = os.path.dirname(os.path.realpath(__file__))
-        file_path = os.path.join(current_file_path, "patterns", f"{filename}.xml")
-        tree.write(file_path)
-        saved = True
 
-# Close the window and quit
-pygame.quit()
+
+
+
+            
+        # Draw a preview of the pattern in the top left corner
+        pygame.draw.rect(screen, (color[0], color[1], color[2]), preview_rect)
+        #draw box around preview rect
+        pygame.draw.rect(screen, (0, 0, 0), preview_rect, 2)
+        #  Go ahead and update the screen with what we've drawn
+        pygame.display.flip()
+
+        #  Limit to 120 frames per second
+        clock.tick(120)
+
+    # Create a Tkinter window to get the filename
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+
+    # Show a simple dialog asking for the filename
+    if not saved:
+        filename = simpledialog.askstring("Filename", "Enter a name for the XML file:")
+
+        # Write the XML document to a file
+        if filename != None or "":
+            tree = ET.ElementTree(xml_root)
+            current_file_path = os.path.dirname(os.path.realpath(__file__))
+            file_path = os.path.join(current_file_path, "patterns", f"{filename}.xml")
+            tree.write(file_path)
+            saved = True
+
+    # Close the window and quit
+    pygame.quit()
+
+
+
+def color_select():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    new_color = simpledialog.askinteger("Color", "Enter a new color (0-255):")
+    return new_color
+
+
+if __name__ == "__main__":
+    main()
