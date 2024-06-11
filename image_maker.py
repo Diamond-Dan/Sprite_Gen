@@ -5,6 +5,7 @@ import os
 from tkinter import simpledialog
 import pygame
 import pygame_textinput
+import sprite_micro_gen
 
 
 def main():
@@ -19,7 +20,7 @@ def main():
     section.fill((100, 255, 255))
     section_background = pygame.Surface((190, 1000))
     section_background.fill((200, 200, 200))
-
+    filename = None
     # Set the title of the window
     pygame.display.set_caption("Mouse Movement Tracker")
 
@@ -75,12 +76,16 @@ def main():
     screen.fill((255, 255, 255))
     menu = False
     rect_selected = -1
+
+    create_images_button = pygame.Rect(5, 800, 160, 50)
+    button_string = "Create Images"
+    button_text = pause_font.render(button_string, True, (0, 0, 0))
     while not done:
 
         events = pygame.event.get()
         #  Main event loop
         for event in events:
-            # put in section
+            # draw sections and text
             if not menu:
                 screen.blit(paused_text_off, paused_text_pos)
 
@@ -94,6 +99,10 @@ def main():
             screen.blit(click_num, (0, 420))
             screen.blit(click_num_2, (0, 450))
             screen.blit(saved_text, (0, 620))
+
+            #draw buttons
+            pygame.draw.rect(screen, (0, 0, 0), create_images_button, 2)
+            screen.blit(button_text, (10, 810))
             if event.type == pygame.QUIT:  # User clicked close
                 done = True
             if not menu:
@@ -121,21 +130,7 @@ def main():
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
                         # The 's' key was pressed! Show the save dialog.
-                        root = tk.Tk()
-                        root.withdraw()  # Hide the main window
-                        filename = simpledialog.askstring(
-                            "Filename", "Enter a name for the XML file:"
-                        )
-                        if filename:
-                            tree = ET.ElementTree(xml_root)
-                            current_file_path = os.path.dirname(
-                                os.path.realpath(__file__)
-                            )
-                            file_path = os.path.join(
-                                current_file_path, "patterns", f"{filename}.xml"
-                            )
-                            tree.write(file_path)
-                            saved = True
+                        saved, filename = save_xml(xml_root)
             # Update text inputs
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN and not menu:
@@ -147,6 +142,7 @@ def main():
                 pygame.draw.rect(screen, (0, 0, 0), text_rects[0], 2)
                 pygame.draw.rect(screen, (0, 0, 0), text_rects[1], 2)
                 pygame.draw.rect(screen, (0, 0, 0), text_rects[2], 2)
+                pygame.draw.rect(screen, (255, 255, 30), create_images_button, 5)
                 screen.blit(paused_text, paused_text_pos)
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
@@ -156,7 +152,11 @@ def main():
                         if text_rects[i].collidepoint(x, y):
                             rect_selected = i
                             # Set focus to the clicked text input box
-
+                    if create_images_button.collidepoint(x, y):
+                        if filename is None:
+                            saved, filename = save_xml(xml_root)
+                        if filename is not None:
+                            sprite_micro_gen.main(50, 50, 25, 3, 300, "2", 1 ,str(filename+".xml"), 1, str(filename+".xml"), False)
             if rect_selected == 0:
 
                 pygame.draw.rect(screen, (255, 0, 0), text_rects[0], 2)
@@ -209,7 +209,26 @@ def main():
     # Close the window and quit
     pygame.quit()
 
-
+def save_xml(xml_root):
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    filename = None
+    while filename is None or filename == "":
+        filename = simpledialog.askstring(
+            "Filename", "Enter a name for the XML file:"
+        )
+        
+        if filename is not None and filename != "":
+            tree = ET.ElementTree(xml_root)
+            current_file_path = os.path.dirname(
+                os.path.realpath(__file__)
+            )
+            file_path = os.path.join(
+                current_file_path, "patterns", f"{filename}.xml"
+            )
+            tree.write(file_path)
+            saved = True
+    return saved, filename
 def color_select():
     root = tk.Tk()
     root.withdraw()  # Hide the main window
