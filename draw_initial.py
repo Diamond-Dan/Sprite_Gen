@@ -12,7 +12,7 @@ def draw_random_image_intial(x, y, seed, pixel_number, file_name, pixel_size):
     array_y = [y]
     new_x = x
     new_y = y
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
+    img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     random.seed(seed)
     draw = ImageDraw.Draw(img)
     lastrand = 0
@@ -131,7 +131,7 @@ def parse_xml(xml_file_name, file_name):
 
 
 def draw_xml_image(x, y, file_name):
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
+    img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
     for i in range(len(x)):
@@ -144,7 +144,7 @@ def draw_planet(x, y, seed, pixel_number, file_name, pixel_size):
     array_y = [y]
     new_x = x
     new_y = y
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
+    img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     random.seed(seed)
     draw = ImageDraw.Draw(img)
     draw.rectangle((x, y, x + pixel_size, y + pixel_size), fill=(255, 0, 0, 255))

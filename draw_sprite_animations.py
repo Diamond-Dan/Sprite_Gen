@@ -9,7 +9,7 @@ def draw_image_guided_wiggle(
     guide_array_x, guide_array_y, color_array, frame_num, wiggle, pixel_size, file_name
 ):
     """Draws an image with a guided wiggle effect."""
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
+    img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     for i in range(len(guide_array_x)):
         new_x = guide_array_x[i] + (random.randint(-wiggle, wiggle))
@@ -48,7 +48,7 @@ def draw_image_guided_explode(
     file_name,
 ):
     """Draws an image with a guided explode effect."""
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
+    img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
     draw.rectangle(
         (

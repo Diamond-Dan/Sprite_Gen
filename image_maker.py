@@ -122,8 +122,8 @@ def main():
                                 # Add the mouse position to the XML document
                                 pos = ET.SubElement(xml_root, "partstitch")
                                 # divide by 10 to scale down to 100x100
-                                pos.set("x", str(round((event.pos[0] - 200) / 10)))
-                                pos.set("y", str(round(event.pos[1] / 10)))
+                                pos.set("x", str(round((event.pos[0] - 200))))
+                                pos.set("y", str(round(event.pos[1])))
                                 pos.set("color_1", str(color[0]))
                                 pos.set("color_2", str(color[1]))
                                 pos.set("color_3", str(color[2]))
@@ -156,7 +156,7 @@ def main():
                         if filename is None:
                             saved, filename = save_xml(xml_root)
                         if filename is not None:
-                            sprite_micro_gen.main(50, 50, 25, 3, 300, "2", 1 ,str(filename+".xml"), 1, str(filename+".xml"), False)
+                            sprite_micro_gen.main(50, 50, 25, 3, 1300, "2", 1, str(filename+".xml"), 4, str(filename+".xml"), False)
             if rect_selected == 0:
 
                 pygame.draw.rect(screen, (255, 0, 0), text_rects[0], 2)
