@@ -3,17 +3,11 @@ Basic Sprite Generation and GIF Generation application for game development. Int
 Current version Alpha 0.01 6/6/24
 
 Usage: 
-Run image_maker.py to draw an image; this will create an XML file.
+Run image_maker.py
 
-Then, either run image_gen_api and loop into your main program or run sprite_micro_gen.py directly. 
-
-To do: 
-
-Create  a GUI that incorporates image_maker.py and sprite_micro_gen.py together
-
-Remove references to the old XML interface 
 
 Features: 
+Draw an image in image_maker.py and hit enter to activate the menu options on the left side. Then click create images to draw the images and the gifs
 
 Known issues:
 
