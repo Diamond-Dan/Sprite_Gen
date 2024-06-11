@@ -3,14 +3,14 @@ import xml.etree.ElementTree as ET
 import tkinter as tk
 import os
 from tkinter import simpledialog
-import pygame 
+import pygame
 import pygame_textinput
 
 
 def main():
     # Initialize Pygame
     pygame.init()
-    #DO NOT FORGET TO ADJUST FOR 1200x1000 frame in XML
+    # DO NOT FORGET TO ADJUST FOR 1200x1000 frame in XML
     saved = False
     # Set the width and height of the screen (width, height)
     size = (1200, 1000)  # draw on large grid which will later be scaled to 100x100
@@ -39,12 +39,10 @@ def main():
     # Set initial positions for the text inputs
     positions = [(10, 10), (10, 60), (10, 110)]
     font = pygame.font.Font(None, 32)
-    color_fonts =[0, 0, 0]
+    color_fonts = [0, 0, 0]
     for i, color_font in enumerate(color_fonts):
         color_fonts[i] = font.render(str(color[i]), True, (255, 0, 0))
     print(color_fonts[0])
-
-
 
     preview_rect = pygame.Rect(10, 200, 50, 50)
     text_inputs = [pygame_textinput.TextInputVisualizer() for _ in range(3)]
@@ -55,37 +53,34 @@ def main():
 
     for i, text_input in enumerate(text_inputs):
         text_inputs[i].manager.input_string = color[i]
-    pause_string="Press Enter"
-    pause_string_2="to change colors"
-    paused_string="DRAWING PAUSED"
-    save_string="Press 's' to save"
-    click_number_string="click numbers to"
-    click_number_string_2="assign RGB value"
+    pause_string = "Press Enter"
+    pause_string_2 = "to change colors"
+    paused_string = "DRAWING PAUSED"
+    save_string = "Press 's' to save"
+    click_number_string = "click numbers to"
+    click_number_string_2 = "assign RGB value"
     pause_font = pygame.font.Font(None, 32)
-    
 
-   
-    
     pause_text_location = (0, 360)
     paused_text_pos = (0, 160)
-    paused_text_color=(255, 0, 0)
-    paused_text_color_off=(255, 255, 255)
+    paused_text_color = (255, 0, 0)
+    paused_text_color_off = (255, 255, 255)
     pause_text = pause_font.render(pause_string, True, paused_text_color)
     pause_text_2 = pause_font.render(pause_string_2, True, paused_text_color)
     paused_text = pause_font.render(paused_string, True, paused_text_color)
     paused_text_off = pause_font.render(paused_string, True, paused_text_color_off)
-    click_num= pause_font.render(click_number_string, True, paused_text_color)
-    click_num_2= pause_font.render(click_number_string_2, True, paused_text_color)
+    click_num = pause_font.render(click_number_string, True, paused_text_color)
+    click_num_2 = pause_font.render(click_number_string_2, True, paused_text_color)
     saved_text = pause_font.render(save_string, True, paused_text_color)
     screen.fill((255, 255, 255))
-    menu=False
+    menu = False
     rect_selected = -1
     while not done:
-        
+
         events = pygame.event.get()
         #  Main event loop
         for event in events:
-            #put in section
+            # put in section
             if not menu:
                 screen.blit(paused_text_off, paused_text_pos)
 
@@ -108,17 +103,17 @@ def main():
                     mouse_down = False
                 elif event.type == pygame.MOUSEMOTION:  # Mouse moved
                     if mouse_down:
-                        
-                        if event.pos[0] > 200 and event.pos[0]<1200:
-                            if event.pos[1] > 0 and event.pos[1]<1000:
-                                print(event.pos)        
+
+                        if event.pos[0] > 200 and event.pos[0] < 1200:
+                            if event.pos[1] > 0 and event.pos[1] < 1000:
+                                print(event.pos)
                                 # Draw a red dot at the mouse position
                                 pygame.draw.circle(screen, color, event.pos, 10)
 
                                 # Add the mouse position to the XML document
                                 pos = ET.SubElement(xml_root, "partstitch")
                                 # divide by 10 to scale down to 100x100
-                                pos.set("x", str(round((event.pos[0]-200) / 10)))
+                                pos.set("x", str(round((event.pos[0] - 200) / 10)))
                                 pos.set("y", str(round(event.pos[1] / 10)))
                                 pos.set("color_1", str(color[0]))
                                 pos.set("color_2", str(color[1]))
@@ -133,19 +128,21 @@ def main():
                         )
                         if filename:
                             tree = ET.ElementTree(xml_root)
-                            current_file_path = os.path.dirname(os.path.realpath(__file__))
+                            current_file_path = os.path.dirname(
+                                os.path.realpath(__file__)
+                            )
                             file_path = os.path.join(
                                 current_file_path, "patterns", f"{filename}.xml"
                             )
                             tree.write(file_path)
                             saved = True
-        # Update text inputs
+            # Update text inputs
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN and not menu:
-                    menu=True
-                
+                    menu = True
+
                 elif event.key == pygame.K_RETURN and menu:
-                    menu=False
+                    menu = False
             if menu:
                 pygame.draw.rect(screen, (0, 0, 0), text_rects[0], 2)
                 pygame.draw.rect(screen, (0, 0, 0), text_rects[1], 2)
@@ -154,15 +151,14 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
                     for i, text_input in enumerate(text_rects):
-                    # Check if the text input box was clicked
-                        
+                        # Check if the text input box was clicked
+
                         if text_rects[i].collidepoint(x, y):
                             rect_selected = i
                             # Set focus to the clicked text input box
-                     
 
             if rect_selected == 0:
-                
+
                 pygame.draw.rect(screen, (255, 0, 0), text_rects[0], 2)
                 new_color = color_select()
                 if new_color is not None:
@@ -183,20 +179,10 @@ def main():
                     color[2] = int(new_color)
                     color_fonts[2] = font.render(str(color[2]), True, (255, 0, 0))
                     rect_selected = -1
-            
-                    
 
-                    
-    
-
-
-
-
-
-            
         # Draw a preview of the pattern in the top left corner
         pygame.draw.rect(screen, (color[0], color[1], color[2]), preview_rect)
-        #draw box around preview rect
+        # draw box around preview rect
         pygame.draw.rect(screen, (0, 0, 0), preview_rect, 2)
         #  Go ahead and update the screen with what we've drawn
         pygame.display.flip()
@@ -222,7 +208,6 @@ def main():
 
     # Close the window and quit
     pygame.quit()
-
 
 
 def color_select():
