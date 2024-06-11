@@ -39,7 +39,7 @@ def main():
     # Set initial positions for the text inputs
     positions = [(10, 10), (10, 60), (10, 110)]
     font = pygame.font.Font(None, 32)
-    color_fonts =[0,0,0]
+    color_fonts =[0, 0, 0]
     for i, color_font in enumerate(color_fonts):
         color_fonts[i] = font.render(str(color[i]), True, (255, 0, 0))
     print(color_fonts[0])
@@ -55,7 +55,28 @@ def main():
 
     for i, text_input in enumerate(text_inputs):
         text_inputs[i].manager.input_string = color[i]
+    pause_string="Press Enter"
+    pause_string_2="to change colors"
+    paused_string="DRAWING PAUSED"
+    save_string="Press 's' to save"
+    click_number_string="click numbers to"
+    click_number_string_2="assign RGB value"
+    pause_font = pygame.font.Font(None, 32)
+    
 
+   
+    
+    pause_text_location = (0, 360)
+    paused_text_pos = (0, 160)
+    paused_text_color=(255, 0, 0)
+    paused_text_color_off=(255, 255, 255)
+    pause_text = pause_font.render(pause_string, True, paused_text_color)
+    pause_text_2 = pause_font.render(pause_string_2, True, paused_text_color)
+    paused_text = pause_font.render(paused_string, True, paused_text_color)
+    paused_text_off = pause_font.render(paused_string, True, paused_text_color_off)
+    click_num= pause_font.render(click_number_string, True, paused_text_color)
+    click_num_2= pause_font.render(click_number_string_2, True, paused_text_color)
+    saved_text = pause_font.render(save_string, True, paused_text_color)
     screen.fill((255, 255, 255))
     menu=False
     rect_selected = -1
@@ -65,11 +86,19 @@ def main():
         #  Main event loop
         for event in events:
             #put in section
+            if not menu:
+                screen.blit(paused_text_off, paused_text_pos)
+
             screen.blit(section, (190, 0))
             screen.blit(section_background, (0, 0))
             screen.blit(color_fonts[0], positions[0])
             screen.blit(color_fonts[1], positions[1])
             screen.blit(color_fonts[2], positions[2])
+            screen.blit(pause_text, pause_text_location)
+            screen.blit(pause_text_2, (0, 390))
+            screen.blit(click_num, (0, 420))
+            screen.blit(click_num_2, (0, 450))
+            screen.blit(saved_text, (0, 620))
             if event.type == pygame.QUIT:  # User clicked close
                 done = True
             if not menu:
@@ -91,6 +120,9 @@ def main():
                                 # divide by 10 to scale down to 100x100
                                 pos.set("x", str(round((event.pos[0]-200) / 10)))
                                 pos.set("y", str(round(event.pos[1] / 10)))
+                                pos.set("color_1", str(color[0]))
+                                pos.set("color_2", str(color[1]))
+                                pos.set("color_3", str(color[2]))
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
                         # The 's' key was pressed! Show the save dialog.
@@ -115,7 +147,10 @@ def main():
                 elif event.key == pygame.K_RETURN and menu:
                     menu=False
             if menu:
-                
+                pygame.draw.rect(screen, (0, 0, 0), text_rects[0], 2)
+                pygame.draw.rect(screen, (0, 0, 0), text_rects[1], 2)
+                pygame.draw.rect(screen, (0, 0, 0), text_rects[2], 2)
+                screen.blit(paused_text, paused_text_pos)
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     x, y = pygame.mouse.get_pos()
                     for i, text_input in enumerate(text_rects):
