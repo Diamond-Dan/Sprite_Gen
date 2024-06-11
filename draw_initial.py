@@ -12,7 +12,7 @@ def draw_random_image_intial(x, y, seed, pixel_number, file_name, pixel_size):
     array_y = [y]
     new_x = x
     new_y = y
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
+    img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     random.seed(seed)
     draw = ImageDraw.Draw(img)
     lastrand = 0
@@ -110,28 +110,28 @@ def parse_xml(xml_file_name, file_name):
             # print(partstitch.get('x'), partstitch.get('y'))
             x.append(int(partstitch.get("x")))
             y.append(int(partstitch.get("y")))
-            random_color_1 += random.randint(-1, 1)
-            random_color_2 += random.randint(-1, 1)
-            random_color_3 += random.randint(-1, 1)
-            random_color_4 += random.randint(-1, 1)
-            random_color_array.append(random_color_1)
-            random_color_array.append(random_color_2)
-            random_color_array.append(random_color_3)
-            random_color_array.append(random_color_4)
-            if random_color_1 <= 0 or random_color_1 >= 255:
-                random_color_1 = 255
-            if random_color_2 <= 0 or random_color_2 >= 255:
-                random_color_2 = 0
-            if random_color_3 <= 0 or random_color_3 >= 255:
-                random_color_3 = 0
-            if random_color_4 <= 0 or random_color_4 >= 255:
-                random_color_4 = 255
+            # random_color_1 += random.randint(-1, 1)
+            # random_color_2 += random.randint(-1, 1)
+            # random_color_3 += random.randint(-1, 1)
+            # random_color_4 += random.randint(-1, 1)
+            random_color_array.append(int(partstitch.get("color_1")))
+            random_color_array.append(int(partstitch.get("color_2")))
+            random_color_array.append(int(partstitch.get("color_3")))
+            random_color_array.append(255)
+            # if random_color_1 <= 0 or random_color_1 >= 255:
+            #     random_color_1 = 255
+            # if random_color_2 <= 0 or random_color_2 >= 255:
+            #     random_color_2 = 0
+            # if random_color_3 <= 0 or random_color_3 >= 255:
+            #     random_color_3 = 0
+            # if random_color_4 <= 0 or random_color_4 >= 255:
+            #     random_color_4 = 255
     # print(f'x: {x}, y: {y}')
     return x, y, random_color_array
 
 
 def draw_xml_image(x, y, file_name):
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
+    img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
 
     for i in range(len(x)):
@@ -144,7 +144,7 @@ def draw_planet(x, y, seed, pixel_number, file_name, pixel_size):
     array_y = [y]
     new_x = x
     new_y = y
-    img = Image.new("RGBA", (100, 100), color=(0, 0, 0, 0))
+    img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     random.seed(seed)
     draw = ImageDraw.Draw(img)
     draw.rectangle((x, y, x + pixel_size, y + pixel_size), fill=(255, 0, 0, 255))
