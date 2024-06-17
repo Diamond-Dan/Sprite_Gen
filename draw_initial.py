@@ -153,7 +153,6 @@ def draw_planet(x, y, seed, pixel_number, file_name, pixel_size):
             (array_x[i], array_y[i], array_x[i] + pixel_size, array_y[i] + pixel_size),
             fill=(255, 0, 0, 255),
         )
-    # print(array_x,array_y)
 
     save.image_saver(img, file_name)
     return array_x, array_y, random_color_array

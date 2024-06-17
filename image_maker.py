@@ -43,7 +43,7 @@ def main():
     color_fonts = [0, 0, 0]
     for i, color_font in enumerate(color_fonts):
         color_fonts[i] = font.render(str(color[i]), True, (255, 0, 0))
-    print(color_fonts[0])
+    
 
     preview_rect = pygame.Rect(10, 200, 50, 50)
     text_inputs = [pygame_textinput.TextInputVisualizer() for _ in range(3)]

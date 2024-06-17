@@ -50,35 +50,45 @@ def draw_image_guided_explode(
     """Draws an image with a guided explode effect."""
     img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
-    draw.rectangle(
-        (
-            guide_array_x[0],
-            guide_array_y[0],
-            guide_array_x[0] + pixel_size,
-            guide_array_y[0] + pixel_size,
-        ),
-        fill=(color_array[0], color_array[1], color_array[2], color_array[3]),
-    )
+    # draw.rectangle(
+    #     (
+    #         guide_array_x[0],
+    #         guide_array_y[0],
+    #         guide_array_x[0] + pixel_size,
+    #         guide_array_y[0] + pixel_size,
+    #     ),
+    #     fill=(color_array[0], color_array[1], color_array[2], color_array[3]),
+    # )
     if frame_num > 0:
-        high_wiggle = frame_num + wiggle
+        high_wiggle = frame_num*wiggle*5
+    elif frame_num > 5:
+        wiggle = wiggle*5
+        high_wiggle = wiggle*frame_num
     else:
         high_wiggle = wiggle
     for i in range(len(guide_array_x)):
         if guide_array_x[i] < int_x and guide_array_y[i] < int_y:  # bottom left
+           
             new_x = guide_array_x[i] - random.randint(wiggle, high_wiggle)
             new_y = guide_array_y[i] - random.randint(wiggle, high_wiggle)
         elif guide_array_x[i] < int_x and guide_array_y[i] > int_y:  # top left
+            
             new_x = guide_array_x[i] - random.randint(wiggle, high_wiggle)
             new_y = guide_array_y[i] + random.randint(wiggle, high_wiggle)
         elif guide_array_x[i] > int_x and guide_array_y[i] > int_y:  # top right
+    
             new_x = guide_array_x[i] + random.randint(wiggle, high_wiggle)
             new_y = guide_array_y[i] + random.randint(wiggle, high_wiggle)
+    
         elif guide_array_x[i] > int_x and guide_array_y[i] < int_y:  # bottom right
+        
             new_x = guide_array_x[i] + random.randint(wiggle, high_wiggle)
             new_y = guide_array_y[i] - random.randint(wiggle, high_wiggle)
         else:
-            new_x = guide_array_x[i]
-            new_y = guide_array_y[i]
+            new_x = guide_array_x[i] + random.randint(-wiggle, wiggle)
+            new_y = guide_array_y[i] + random.randint(-wiggle, wiggle)
+
+        print(f"g_x: {guide_array_x[i]} g_y: {guide_array_y[i]} new_x: {new_x} new_y: {new_y} frame:{i}")
         draw.rectangle(
             (new_x, new_y, new_x + pixel_size, new_y + pixel_size),
             fill=(
