@@ -89,45 +89,24 @@ def parse_xml(xml_file_name, file_name):
 
     # Get the root element
     root = tree.getroot()
-    # generate colors
-    random_color_1 = random.randint(0, 255)
-    random_color_2 = random.randint(0, 255)
-    random_color_3 = random.randint(0, 255)
-    random_color_4 = random.randint(200, 255)
-    random_color_array = [
-        random_color_1,
-        random_color_2,
-        random_color_3,
-        random_color_4,
-    ]
-    # Find all 'partstitch' elements and print their 'x' and 'y' attributes
+   
+    color_array = []    # Find all 'partstitch' elements and print their 'x' and 'y' attributes
     for partstitch in root.iter():
         if (
             (partstitch.tag == "partstitch" or partstitch.tag == "stitch")
             and partstitch.get("x") != None
             and partstitch.get("y") != None
         ):
-            # print(partstitch.get('x'), partstitch.get('y'))
+          
             x.append(int(partstitch.get("x")))
             y.append(int(partstitch.get("y")))
-            # random_color_1 += random.randint(-1, 1)
-            # random_color_2 += random.randint(-1, 1)
-            # random_color_3 += random.randint(-1, 1)
-            # random_color_4 += random.randint(-1, 1)
-            random_color_array.append(int(partstitch.get("color_1")))
-            random_color_array.append(int(partstitch.get("color_2")))
-            random_color_array.append(int(partstitch.get("color_3")))
-            random_color_array.append(255)
-            # if random_color_1 <= 0 or random_color_1 >= 255:
-            #     random_color_1 = 255
-            # if random_color_2 <= 0 or random_color_2 >= 255:
-            #     random_color_2 = 0
-            # if random_color_3 <= 0 or random_color_3 >= 255:
-            #     random_color_3 = 0
-            # if random_color_4 <= 0 or random_color_4 >= 255:
-            #     random_color_4 = 255
-    # print(f'x: {x}, y: {y}')
-    return x, y, random_color_array
+           
+            color_array.append(int(partstitch.get("color_1")))
+            color_array.append(int(partstitch.get("color_2")))
+            color_array.append(int(partstitch.get("color_3")))
+            color_array.append(255)
+       
+    return x, y, color_array
 
 
 def draw_xml_image(x, y, file_name):

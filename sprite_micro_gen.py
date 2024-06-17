@@ -61,8 +61,8 @@ def main(
         if server_name != "":
             filename_2.append(name_2)
         server_file_explode_name.append(server_name)
-    gif_loc_1 = save.gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount)
-    gif_loc_2 = save.gif_maker(
+    gif_loc_1 = save.gif_maker(file_name+"wiggle",filename, cur_file_loc, seed, pixel_number, frames, filecount)
+    gif_loc_2 = save.gif_maker(file_name+"explode",
         filename_2, cur_file_loc, seed, pixel_number, frames, filecount
     )
     if server_mode == True:

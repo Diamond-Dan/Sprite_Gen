@@ -156,7 +156,7 @@ def main():
                         if filename is None:
                             saved, filename = save_xml(xml_root)
                         if filename is not None:
-                            sprite_micro_gen.main(50, 50, 25, 3, 1300, "2", 1, str(filename+".xml"), 4, str(filename+".xml"), False)
+                            sprite_micro_gen.main(50, 50, 25, 3, 1300, "2", 1, str(filename+".xml"), 15, str(filename+".xml"), False)
             if rect_selected == 0:
 
                 pygame.draw.rect(screen, (255, 0, 0), text_rects[0], 2)

@@ -16,11 +16,11 @@ def draw_image_guided_wiggle(
         new_y = guide_array_y[i] + (random.randint(-wiggle, wiggle))
         if new_x < 10:
             new_x += 10
-        if new_x > 90:
+        if new_x > 1000:
             new_x -= 10
         if new_y < 10:
             new_y += 10
-        if new_y > 90:
+        if new_y > 1000:
             new_y -= 10
         draw.rectangle(
             (new_x, new_y, new_x + pixel_size, new_y + pixel_size),
