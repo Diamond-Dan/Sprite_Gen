@@ -48,17 +48,13 @@ def draw_image_guided_explode(
     file_name,
 ):
     """Draws an image with a guided explode effect."""
+    bottom_left = 0
+    top_left = 0
+    top_right = 0
+    bottom_right = 0
+    other = 0
     img = Image.new("RGBA", (1000, 1000), color=(0, 0, 0, 0))
     draw = ImageDraw.Draw(img)
-    # draw.rectangle(
-    #     (
-    #         guide_array_x[0],
-    #         guide_array_y[0],
-    #         guide_array_x[0] + pixel_size,
-    #         guide_array_y[0] + pixel_size,
-    #     ),
-    #     fill=(color_array[0], color_array[1], color_array[2], color_array[3]),
-    # )
     if frame_num > 0:
         high_wiggle = frame_num*wiggle*5
     elif frame_num > 5:
@@ -68,27 +64,27 @@ def draw_image_guided_explode(
         high_wiggle = wiggle
     for i in range(len(guide_array_x)):
         if guide_array_x[i] < int_x and guide_array_y[i] < int_y:  # bottom left
-           
+            bottom_left = bottom_left+1
             new_x = guide_array_x[i] - random.randint(wiggle, high_wiggle)
             new_y = guide_array_y[i] - random.randint(wiggle, high_wiggle)
         elif guide_array_x[i] < int_x and guide_array_y[i] > int_y:  # top left
-            
+            top_left = top_left+1
             new_x = guide_array_x[i] - random.randint(wiggle, high_wiggle)
             new_y = guide_array_y[i] + random.randint(wiggle, high_wiggle)
         elif guide_array_x[i] > int_x and guide_array_y[i] > int_y:  # top right
-    
+            top_right = top_right+1
             new_x = guide_array_x[i] + random.randint(wiggle, high_wiggle)
             new_y = guide_array_y[i] + random.randint(wiggle, high_wiggle)
     
         elif guide_array_x[i] > int_x and guide_array_y[i] < int_y:  # bottom right
-        
+            bottom_right = bottom_right+1
             new_x = guide_array_x[i] + random.randint(wiggle, high_wiggle)
             new_y = guide_array_y[i] - random.randint(wiggle, high_wiggle)
         else:
+            other = other+1
             new_x = guide_array_x[i] + random.randint(-wiggle, wiggle)
             new_y = guide_array_y[i] + random.randint(-wiggle, wiggle)
 
-        print(f"g_x: {guide_array_x[i]} g_y: {guide_array_y[i]} new_x: {new_x} new_y: {new_y} frame:{i}")
         draw.rectangle(
             (new_x, new_y, new_x + pixel_size, new_y + pixel_size),
             fill=(
@@ -98,6 +94,7 @@ def draw_image_guided_explode(
                 color_array[i * 4 + 3],
             ),
         )
+        print(f"bottom_left: {bottom_left}, top_left: {top_left}, top_right: {top_right}, bottom_right: {bottom_right}, other: {other}")
     file_name = file_name + "_explode"
     name, server_name = save.image_saver(img, file_name)
     return name, server_name
