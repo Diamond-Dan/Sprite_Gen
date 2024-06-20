@@ -25,8 +25,7 @@ def main():
     saved = False
     # Set the width and height of the screen (width, height)
     size = (1200, 1000)  # draw on large grid which will later be scaled to 100x100
-    screen = pygame.display.set_mode(size)
-    grid_screen = pygame.Surface(size, pygame.SRCALPHA)
+    screen = pygame.display.set_mode(size)   
     section = pygame.Surface((10, 1000))
     section.fill((100, 255, 255))
     section_background = pygame.Surface((190, 1000))
@@ -85,8 +84,7 @@ def main():
     click_num_2 = pause_font.render(click_number_string_2, True, paused_text_color)
     saved_text = pause_font.render(save_string, True, paused_text_color)
     screen.fill((255, 255, 255))
-    screen.fill((255, 255, 255))
-    grid_screen.fill((255, 255, 255, 0))
+   
     menu = False
     rect_selected = -1
     grid_toggle = True
@@ -99,20 +97,21 @@ def main():
         #  Main event loop
         for event in events:
             # draw sections and text
+            screen.blit(section_background, (0, 0))
             if not menu:
                 screen.blit(paused_text_off, paused_text_pos)
 
                 screen.blit(section, (190, 0))
                 screen.blit(section_background, (0, 0))
-                screen.blit(color_fonts[0], positions[0])
-                screen.blit(color_fonts[1], positions[1])
-                screen.blit(color_fonts[2], positions[2])
+             
                 screen.blit(pause_text, pause_text_location)
                 screen.blit(pause_text_2, (0, 390))
                 screen.blit(click_num, (0, 420))
                 screen.blit(click_num_2, (0, 450))
                 screen.blit(saved_text, (0, 620))
-
+            screen.blit(color_fonts[0], positions[0])
+            screen.blit(color_fonts[1], positions[1])
+            screen.blit(color_fonts[2], positions[2])
             #draw buttons
             pygame.draw.rect(screen, (0, 0, 0), create_images_button, 2)
             screen.blit(button_text, (10, 810))
@@ -281,7 +280,6 @@ def paint_on_canvas(color, event, xml_root, screen):
 
 def redraw(drawing_saving_array, screen):
     for drawing in drawing_saving_array:
-        print(drawing_saving_array)
         pygame.draw.rect(screen, drawing.color, (drawing.x, drawing.y, 10, 10))
     return screen
 
