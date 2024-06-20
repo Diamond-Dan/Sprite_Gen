@@ -108,25 +108,18 @@ def main():
             if not menu:
                 if event.type == pygame.MOUSEBUTTONDOWN:  # Mouse button pressed
                     mouse_down = True
+                    if event.pos[0] > 200 and event.pos[0] < 1200:
+                        if event.pos[1] > 0 and event.pos[1] < 1000:
+                            paint_on_canvas(color, event, xml_root, screen)
+                elif event.type == pygame.MOUSEMOTION and mouse_down:
+                    # Draw at mouse position with right click down
+                    if event.pos[0] > 200 and event.pos[0] < 1200:
+                        if event.pos[1] > 0 and event.pos[1] < 1000:
+                            paint_on_canvas(color, event, xml_root, screen)
+
+            
                 elif event.type == pygame.MOUSEBUTTONUP:  # Mouse button released
                     mouse_down = False
-                elif event.type == pygame.MOUSEMOTION:  # Mouse moved
-                    if mouse_down:
-
-                        if event.pos[0] > 200 and event.pos[0] < 1200:
-                            if event.pos[1] > 0 and event.pos[1] < 1000:
-                                print(event.pos)
-                                # Draw a red dot at the mouse position
-                                pygame.draw.circle(screen, color, event.pos, 10)
-
-                                # Add the mouse position to the XML document
-                                pos = ET.SubElement(xml_root, "partstitch")
-                                # divide by 10 to scale down to 100x100
-                                pos.set("x", str(round((event.pos[0] - 200))))
-                                pos.set("y", str(round(event.pos[1])))
-                                pos.set("color_1", str(color[0]))
-                                pos.set("color_2", str(color[1]))
-                                pos.set("color_3", str(color[2]))
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_s:
                         # The 's' key was pressed! Show the save dialog.
@@ -236,5 +229,18 @@ def color_select():
     return new_color
 
 
+def paint_on_canvas(color, event, xml_root, screen):
+    print(event.pos)
+ # Draw at mouse position with right click down
+    pygame.draw.rect(screen, color, (event.pos[0], event.pos[1], 10, 10))
+
+    # Add the mouse position to the XML document
+    pos = ET.SubElement(xml_root, "partstitch")
+    # divide by 10 to scale down to 100x100
+    pos.set("x", str(round((event.pos[0] - 200))))
+    pos.set("y", str(round(event.pos[1])))
+    pos.set("color_1", str(color[0]))
+    pos.set("color_2", str(color[1]))
+    pos.set("color_3", str(color[2]))
 if __name__ == "__main__":
     main()
