@@ -94,7 +94,7 @@ def draw_image_guided_explode(
                 color_array[i * 4 + 3],
             ),
         )
-        #print(f"bottom_left: {bottom_left}, top_left: {top_left}, top_right: {top_right}, bottom_right: {bottom_right}, other: {other}")
+        
     file_name = file_name + "_explode"
     name, server_name = save.image_saver(img, file_name)
     return name, server_name
