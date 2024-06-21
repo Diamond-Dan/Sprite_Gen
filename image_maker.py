@@ -92,7 +92,9 @@ def main():
     click_num_2 = pause_font.render(click_number_string_2, True, paused_text_color)
     saved_text = pause_font.render(save_string, True, paused_text_color)
     brush_text = pause_font.render(brush_string, True, paused_text_color)
-    screen.fill((255, 255, 255))
+    #background
+    background_color = (255, 255, 255)
+    screen.fill(background_color)
    
     menu = False
     rect_selected = -1
@@ -158,6 +160,8 @@ def main():
                         if not grid_toggle:
                             screen.fill((255, 255, 255, 0))
                             redraw(drawning_saving_array, screen)
+                    if event.key == pygame.K_z and (pygame.key.get_mods() & pygame.KMOD_CTRL):
+                        drawning_saving_array = undo(drawning_saving_array, xml_root, screen, background_color)
             # Update text inputs
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN and not menu:
@@ -251,7 +255,18 @@ def main():
     # Close the window and quit
     pygame.quit()
 
-
+def undo(drawing_saving_array, xml_file, screen, background_color):
+    print("undo")
+    print(xml_file)
+    if len(drawing_saving_array) == 0:
+        return drawing_saving_array
+    else:
+        last_drawing = drawing_saving_array[-1]
+        pygame.draw.rect(screen, background_color, (last_drawing.x, last_drawing.y, 10, 10))
+        drawing_saving_array.pop()
+        xml_file.remove(xml_file[-1])
+        return drawing_saving_array
+    
 def create_grid(screen):
     for x in range(200, 1200, 10):
         pygame.draw.line(screen, (0, 0, 0), (x, 0), (x, 1000))
