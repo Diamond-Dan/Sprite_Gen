@@ -9,14 +9,14 @@ import sprite_micro_gen
 
 
 class drawing_obj:
-    def __init__(self, pos, color):
+    def __init__(self, pos, color_obj):
         self.pos = pos
         self.x = pos[0]
         self.y = pos[1]
-        self.color = color
-        self.color_1 = color[0]
-        self.color_2 = color[1]
-        self.color_3 = color[2]
+        self.color_obj_list = color_obj
+        self.color_1 = color_obj[0]
+        self.color_2 = color_obj[1]
+        self.color_3 = color_obj[2]
 
 
 def main():
@@ -284,8 +284,6 @@ def main():
 
 
 def undo(drawing_saving_array, xml_file, screen, background_color):
-    print("undo")
-    print(xml_file)
     if len(drawing_saving_array) == 0:
         return drawing_saving_array
     else:
@@ -355,7 +353,7 @@ def paint_on_canvas(color, size, event, xml_root, screen):
 
 def redraw(drawing_saving_array, screen):
     for drawing in drawing_saving_array:
-        pygame.draw.rect(screen, drawing.color, (drawing.x, drawing.y, 10, 10))
+        pygame.draw.rect(screen, (drawing.color_1, drawing.color_2, drawing.color_3), (drawing.x, drawing.y, 10, 10))
     return screen
 
 
