@@ -45,11 +45,17 @@ def main():
 
     # Create the root element for the XML document
     xml_root = ET.Element("root")
+    #fonts
+    font = pygame.font.Font(None, 28)
+    pause_font = pygame.font.Font(None, 28)
+    #painting variables
 
     color = [255, 255, 255]
-    # Set initial positions for the text inputs
-    positions = [(10, 10), (10, 60), (10, 110)]
-    font = pygame.font.Font(None, 32)
+    paint_brush_size = 10
+    paint_brush_font = font.render(str(paint_brush_size), True, (255, 0, 0))
+    # Set initial positions for the inputs
+    positions = [(10, 10), (10, 60), (10, 110), (10, 160), (10, 310)]
+   
     color_fonts = [0, 0, 0]
     for i, color_font in enumerate(color_fonts):
         color_fonts[i] = font.render(str(color[i]), True, (255, 0, 0))
@@ -57,25 +63,27 @@ def main():
 
     preview_rect = pygame.Rect(10, 200, 50, 50)
     text_inputs = [pygame_textinput.TextInputVisualizer() for _ in range(3)]
-    text_rects = [pygame.Rect(10, 10, 140, 32) for _ in range(3)]
+    text_rects = [pygame.Rect(10, 10, 140, 32) for _ in range(5)]
     for i, pos in enumerate(positions):
         text_rects[i].topleft = pos
         text_rects[i].size = (140, 32)
 
     for i, text_input in enumerate(text_inputs):
         text_inputs[i].manager.input_string = color[i]
+    #strings
     pause_string = "Press Enter"
     pause_string_2 = "to change colors"
     paused_string = "DRAWING PAUSED"
     save_string = "Press 's' to save"
     click_number_string = "click numbers to"
     click_number_string_2 = "assign RGB value"
-    pause_font = pygame.font.Font(None, 32)
-
+    brush_string = "Brush Size"
+    #locations and loading for strings
     pause_text_location = (0, 360)
-    paused_text_pos = (0, 160)
+    paused_text_pos = (0, 260)
     paused_text_color = (255, 0, 0)
     paused_text_color_off = (255, 255, 255)
+    brush_text_location = (0, 290)
     pause_text = pause_font.render(pause_string, True, paused_text_color)
     pause_text_2 = pause_font.render(pause_string_2, True, paused_text_color)
     paused_text = pause_font.render(paused_string, True, paused_text_color)
@@ -83,6 +91,7 @@ def main():
     click_num = pause_font.render(click_number_string, True, paused_text_color)
     click_num_2 = pause_font.render(click_number_string_2, True, paused_text_color)
     saved_text = pause_font.render(save_string, True, paused_text_color)
+    brush_text = pause_font.render(brush_string, True, paused_text_color)
     screen.fill((255, 255, 255))
    
     menu = False
@@ -91,6 +100,9 @@ def main():
     create_images_button = pygame.Rect(5, 800, 160, 50)
     button_string = "Create Images"
     button_text = pause_font.render(button_string, True, (0, 0, 0))
+
+
+
     while not done:
 
         events = pygame.event.get()
@@ -112,6 +124,8 @@ def main():
             screen.blit(color_fonts[0], positions[0])
             screen.blit(color_fonts[1], positions[1])
             screen.blit(color_fonts[2], positions[2])
+            screen.blit(brush_text, brush_text_location)
+            screen.blit(paint_brush_font, positions[4])
             #draw buttons
             pygame.draw.rect(screen, (0, 0, 0), create_images_button, 2)
             screen.blit(button_text, (10, 810))
@@ -122,13 +136,13 @@ def main():
                     mouse_down = True
                     if event.pos[0] > 200 and event.pos[0] < 1200:
                         if event.pos[1] > 0 and event.pos[1] < 1000:
-                            drawning_saving_array.append(paint_on_canvas(color, event, xml_root, screen))
+                            drawning_saving_array.append(paint_on_canvas(color, paint_brush_size, event, xml_root, screen))
                            
                 elif event.type == pygame.MOUSEMOTION and mouse_down:
                     # Draw at mouse position with right click down
                     if event.pos[0] > 200 and event.pos[0] < 1200:
                         if event.pos[1] > 0 and event.pos[1] < 1000:
-                           drawning_saving_array.append(paint_on_canvas(color, event, xml_root, screen))
+                           drawning_saving_array.append(paint_on_canvas(color, paint_brush_size, event, xml_root, screen))
 
             
                 elif event.type == pygame.MOUSEBUTTONUP:  # Mouse button released
@@ -155,6 +169,8 @@ def main():
                 pygame.draw.rect(screen, (0, 0, 0), text_rects[0], 2)
                 pygame.draw.rect(screen, (0, 0, 0), text_rects[1], 2)
                 pygame.draw.rect(screen, (0, 0, 0), text_rects[2], 2)
+                pygame.draw.rect(screen, (0, 0, 0), text_rects[3], 2)
+                pygame.draw.rect(screen, (0, 0, 0), text_rects[4], 2)
                 pygame.draw.rect(screen, (255, 255, 30), create_images_button, 5)
                 screen.blit(paused_text, paused_text_pos)
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -192,6 +208,14 @@ def main():
                     color[2] = int(new_color)
                     color_fonts[2] = font.render(str(color[2]), True, (255, 0, 0))
                     rect_selected = -1
+            elif rect_selected == 4:
+                pygame.draw.rect(screen, (255, 0, 0), text_rects[4], 2)
+                new_size = brush_size_select()
+                if new_size is not None:
+                    paint_brush_size = new_size
+                    paint_brush_font = font.render(str(paint_brush_size), True, (255, 0, 0))
+                    rect_selected = -1
+
 
         # Draw a preview of the pattern in the top left corner
         pygame.draw.rect(screen, (color[0], color[1], color[2]), preview_rect)
@@ -261,11 +285,15 @@ def color_select():
     new_color = simpledialog.askinteger("Color", "Enter a new color (0-255):")
     return new_color
 
+def brush_size_select():
+    root = tk.Tk()
+    root.withdraw()  # Hide the main window
+    new_size = simpledialog.askinteger("Brush Size", "Enter a new brush size (1-10):")
+    return new_size
 
-def paint_on_canvas(color, event, xml_root, screen):
-    print(event.pos)
+def paint_on_canvas(color, size, event, xml_root, screen):
     # Draw at mouse position with right click down
-    pygame.draw.rect(screen, color, (event.pos[0], event.pos[1], 10, 10))
+    pygame.draw.rect(screen, color, (event.pos[0], event.pos[1], size, size))
 
     # Add the mouse position to the XML document
     pos = ET.SubElement(xml_root, "partstitch")
