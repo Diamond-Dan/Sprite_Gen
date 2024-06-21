@@ -2,7 +2,7 @@
 import os
 import imageio.v2 as imageio
 
-def gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount):
+def gif_maker(type,filename, cur_file_loc, seed, pixel_number, frames, filecount):
     """Creates a gif from a list of images."""
     images = []
 
@@ -12,7 +12,8 @@ def gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount):
 
     gif_name = (
         cur_file_loc
-        + "\\gifs\\movie_"
+         + "\\gifs\\"
+        + type
         + "seed_"
         + str(seed)
         + "pixel_"
@@ -23,7 +24,7 @@ def gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount):
         + ".gif"
     )
     server_gif_name = (
-        "movie_"
+        type
         + "seed_"
         + str(seed)
         + "pixel_"
@@ -37,7 +38,8 @@ def gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount):
         filecount += 1
         gif_name = (
             cur_file_loc
-            + "\\gifs\\movie_"
+            + "\\gifs\\"
+            + type
             + "seed_"
             + str(seed)
             + "pixel_"
@@ -53,7 +55,7 @@ def gif_maker(filename, cur_file_loc, seed, pixel_number, frames, filecount):
     while os.path.isfile(server_gif_name):
         filecount += 1
         server_gif_name = (
-            "movie_"
+            type
             + "seed_"
             + str(seed)
             + "pixel_"
@@ -78,7 +80,6 @@ def image_saver(img, file_name):
         filecount += 1
         name = cur_file_loc + "\\Images\\" + file_name + str(filecount) + ".png"
         server_name = file_name + str(filecount) + ".png"
-        print(server_name)
     img.save(cur_file_loc + "\\Images\\" + file_name + str(filecount) + ".png")
 
     return name, server_name

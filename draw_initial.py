@@ -82,6 +82,7 @@ def parse_xml(xml_file_name, file_name):
     # Parse the XML file
     x = []
     y = []
+    size = []
     current_file_path = os.path.dirname(os.path.realpath(__file__))
 
     file_name_loc = current_file_path + "\\patterns\\" + xml_file_name
@@ -89,45 +90,23 @@ def parse_xml(xml_file_name, file_name):
 
     # Get the root element
     root = tree.getroot()
-    # generate colors
-    random_color_1 = random.randint(0, 255)
-    random_color_2 = random.randint(0, 255)
-    random_color_3 = random.randint(0, 255)
-    random_color_4 = random.randint(200, 255)
-    random_color_array = [
-        random_color_1,
-        random_color_2,
-        random_color_3,
-        random_color_4,
-    ]
-    # Find all 'partstitch' elements and print their 'x' and 'y' attributes
-    for partstitch in root.iter():
-        if (
-            (partstitch.tag == "partstitch" or partstitch.tag == "stitch")
-            and partstitch.get("x") != None
-            and partstitch.get("y") != None
+   
+    color_array = []    # Find all 'sprite' elements and print their 'x' and 'y' attributes
+    for sprite in root.iter():
+        if (sprite.tag == "sprite"
+            and sprite.get("x") != None
+            and sprite.get("y") != None
         ):
-            # print(partstitch.get('x'), partstitch.get('y'))
-            x.append(int(partstitch.get("x")))
-            y.append(int(partstitch.get("y")))
-            # random_color_1 += random.randint(-1, 1)
-            # random_color_2 += random.randint(-1, 1)
-            # random_color_3 += random.randint(-1, 1)
-            # random_color_4 += random.randint(-1, 1)
-            random_color_array.append(int(partstitch.get("color_1")))
-            random_color_array.append(int(partstitch.get("color_2")))
-            random_color_array.append(int(partstitch.get("color_3")))
-            random_color_array.append(255)
-            # if random_color_1 <= 0 or random_color_1 >= 255:
-            #     random_color_1 = 255
-            # if random_color_2 <= 0 or random_color_2 >= 255:
-            #     random_color_2 = 0
-            # if random_color_3 <= 0 or random_color_3 >= 255:
-            #     random_color_3 = 0
-            # if random_color_4 <= 0 or random_color_4 >= 255:
-            #     random_color_4 = 255
-    # print(f'x: {x}, y: {y}')
-    return x, y, random_color_array
+          
+            x.append(int(sprite.get("x")))
+            y.append(int(sprite.get("y")))
+            size.append(int(sprite.get("size")))
+            color_array.append(int(sprite.get("color_1")))
+            color_array.append(int(sprite.get("color_2")))
+            color_array.append(int(sprite.get("color_3")))
+            color_array.append(255)
+       
+    return x, y,size, color_array
 
 
 def draw_xml_image(x, y, file_name):
@@ -174,7 +153,6 @@ def draw_planet(x, y, seed, pixel_number, file_name, pixel_size):
             (array_x[i], array_y[i], array_x[i] + pixel_size, array_y[i] + pixel_size),
             fill=(255, 0, 0, 255),
         )
-    # print(array_x,array_y)
 
     save.image_saver(img, file_name)
     return array_x, array_y, random_color_array
