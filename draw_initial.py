@@ -82,6 +82,7 @@ def parse_xml(xml_file_name, file_name):
     # Parse the XML file
     x = []
     y = []
+    size = []
     current_file_path = os.path.dirname(os.path.realpath(__file__))
 
     file_name_loc = current_file_path + "\\patterns\\" + xml_file_name
@@ -92,21 +93,20 @@ def parse_xml(xml_file_name, file_name):
    
     color_array = []    # Find all 'sprite' elements and print their 'x' and 'y' attributes
     for sprite in root.iter():
-        if (
-            (sprite.tag == "sprite" or sprite.tag == "stitch")
+        if (sprite.tag == "sprite"
             and sprite.get("x") != None
             and sprite.get("y") != None
         ):
           
             x.append(int(sprite.get("x")))
             y.append(int(sprite.get("y")))
-           
+            size.append(int(sprite.get("size")))
             color_array.append(int(sprite.get("color_1")))
             color_array.append(int(sprite.get("color_2")))
             color_array.append(int(sprite.get("color_3")))
             color_array.append(255)
        
-    return x, y, color_array
+    return x, y,size, color_array
 
 
 def draw_xml_image(x, y, file_name):

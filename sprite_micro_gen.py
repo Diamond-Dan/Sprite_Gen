@@ -33,7 +33,7 @@ def main(
             int_x, int_y, seed, pixel_number, file_name, pixel_size
         )
     elif mode == "2":
-        guide_array_x, guide_array_y, color_array = init_draw.parse_xml(xml, file_name)
+        guide_array_x, guide_array_y, guide_array_size, color_array = init_draw.parse_xml(xml, file_name)
     elif mode == "3":
         guide_array_x, guide_array_y, color_array = init_draw.draw_planet(
             int_x, int_y, seed, pixel_number, file_name, pixel_size
@@ -41,7 +41,7 @@ def main(
 
     for i in range(frames):
         name, server_name = dsa.draw_image_guided_wiggle(
-            guide_array_x, guide_array_y, color_array, i, wiggle, pixel_size, file_name
+            guide_array_x, guide_array_y, color_array, i, wiggle, guide_array_size, file_name
         )
         if server_name != "":
             filename.append(name)
@@ -55,7 +55,7 @@ def main(
             color_array,
             i,
             wiggle,
-            pixel_size,
+            guide_array_size,
             file_name,
         )
         if server_name != "":

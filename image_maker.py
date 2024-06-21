@@ -295,16 +295,19 @@ def paint_on_canvas(color, size, event, xml_root, screen):
     # Draw at mouse position with right click down
     pygame.draw.rect(screen, color, (event.pos[0], event.pos[1], size, size))
 
-    # Add the mouse position to the XML document
+    # Add the drawing details to xml
     pos = ET.SubElement(xml_root, "sprite")
     pos.set("x", str(round((event.pos[0] - 200))))
     pos.set("y", str(round(event.pos[1])))
     pos.set("color_1", str(color[0]))
     pos.set("color_2", str(color[1]))
     pos.set("color_3", str(color[2]))
+    pos.set("size", str(size))
     postion = (event.pos[0], event.pos[1])
     new_drawing = drawing_obj(postion, color)
     return new_drawing
+
+
 
 def redraw(drawing_saving_array, screen):
     for drawing in drawing_saving_array:
