@@ -296,7 +296,7 @@ def paint_on_canvas(color, size, event, xml_root, screen):
     pygame.draw.rect(screen, color, (event.pos[0], event.pos[1], size, size))
 
     # Add the mouse position to the XML document
-    pos = ET.SubElement(xml_root, "partstitch")
+    pos = ET.SubElement(xml_root, "sprite")
     pos.set("x", str(round((event.pos[0] - 200))))
     pos.set("y", str(round(event.pos[1])))
     pos.set("color_1", str(color[0]))

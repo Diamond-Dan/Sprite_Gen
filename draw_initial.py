@@ -90,20 +90,20 @@ def parse_xml(xml_file_name, file_name):
     # Get the root element
     root = tree.getroot()
    
-    color_array = []    # Find all 'partstitch' elements and print their 'x' and 'y' attributes
-    for partstitch in root.iter():
+    color_array = []    # Find all 'sprite' elements and print their 'x' and 'y' attributes
+    for sprite in root.iter():
         if (
-            (partstitch.tag == "partstitch" or partstitch.tag == "stitch")
-            and partstitch.get("x") != None
-            and partstitch.get("y") != None
+            (sprite.tag == "sprite" or sprite.tag == "stitch")
+            and sprite.get("x") != None
+            and sprite.get("y") != None
         ):
           
-            x.append(int(partstitch.get("x")))
-            y.append(int(partstitch.get("y")))
+            x.append(int(sprite.get("x")))
+            y.append(int(sprite.get("y")))
            
-            color_array.append(int(partstitch.get("color_1")))
-            color_array.append(int(partstitch.get("color_2")))
-            color_array.append(int(partstitch.get("color_3")))
+            color_array.append(int(sprite.get("color_1")))
+            color_array.append(int(sprite.get("color_2")))
+            color_array.append(int(sprite.get("color_3")))
             color_array.append(255)
        
     return x, y, color_array
