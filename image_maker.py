@@ -26,7 +26,7 @@ def main():
     drawning_saving_array = []
     saved = False
     # Set the width and height of the screen (width, height)
-    size = (1200, 1000)  # draw on large grid which will later be scaled to 100x100
+    size = (1200, 1000)  
     screen = pygame.display.set_mode(size)
     section = pygame.Surface((10, 1000))
     section.fill((100, 255, 255))
@@ -94,8 +94,9 @@ def main():
     saved_text = pause_font.render(save_string, True, paused_text_color)
     brush_text = pause_font.render(brush_string, True, paused_text_color)
     # background
-    background_color = (255, 255, 255)
-    screen.fill(background_color)
+    background_color = [(255, 255, 255), (0, 0, 0), (50, 90, 168), (46, 135, 85)]
+    b_g=0
+    screen.fill(background_color[b_g])
 
     menu = False
     rect_selected = -1
@@ -110,6 +111,11 @@ def main():
         #  Main event loop
         for event in events:
             # draw sections and text
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_b:
+                b_g =b_g+1
+                if b_g>len(background_color)-1:
+                    b_g=0
+                screen.fill(background_color[b_g])
             screen.blit(section_background, (0, 0))
             if not menu:
                 screen.blit(paused_text_off, paused_text_pos)
@@ -255,7 +261,7 @@ def main():
         #  Go ahead and update the screen with what we've drawn
 
         if grid_toggle:
-            grid = create_grid(screen)
+            grid = create_grid(screen, background_color[b_g])
             screen.blit(grid, (0, 0))
 
         pygame.display.flip()
@@ -296,11 +302,12 @@ def undo(drawing_saving_array, xml_file, screen, background_color):
         return drawing_saving_array
 
 
-def create_grid(screen):
+def create_grid(screen, background_color):
+    inverted_color = (255 - background_color[0], 255 - background_color[1], 255 - background_color[2])
     for x in range(200, 1200, 10):
-        pygame.draw.line(screen, (0, 0, 0), (x, 0), (x, 1000))
+        pygame.draw.line(screen, inverted_color, (x, 0), (x, 1000))
     for y in range(0, 1000, 10):
-        pygame.draw.line(screen, (0, 0, 0), (200, y), (1200, y))
+        pygame.draw.line(screen, inverted_color, (200, y), (1200, y))
     return screen
 
 
