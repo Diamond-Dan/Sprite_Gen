@@ -116,6 +116,7 @@ def main():
                 if b_g>len(background_color)-1:
                     b_g=0
                 screen.fill(background_color[b_g])
+                redraw(drawning_saving_array, screen)
             screen.blit(section_background, (0, 0))
             if not menu:
                 screen.blit(paused_text_off, paused_text_pos)
@@ -173,7 +174,7 @@ def main():
 
                         grid_toggle = not grid_toggle
                         if not grid_toggle:
-                            screen.fill((255, 255, 255, 0))
+                            screen.fill(background_color[b_g])
                             redraw(drawning_saving_array, screen)
                     if event.key == pygame.K_z and (
                         pygame.key.get_mods() & pygame.KMOD_CTRL
