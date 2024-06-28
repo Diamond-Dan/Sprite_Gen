@@ -344,17 +344,17 @@ def brush_size_select():
 
 def paint_on_canvas(color, size, event, xml_root, screen):
     # Draw at mouse position with right click down
-    pygame.draw.rect(screen, color, (event.pos[0], event.pos[1], size, size))
+    print(pygame.draw.rect(screen, color, (round(event.pos[0]//10)*10, round(event.pos[1]//10)*10, size, size)))
 
     # Add the drawing details to xml
     pos = ET.SubElement(xml_root, "sprite")
-    pos.set("x", str(round((event.pos[0] - 200))))
-    pos.set("y", str(round(event.pos[1])))
+    pos.set("x", str(round((event.pos[0] - 200)//10)*10))
+    pos.set("y", str(round(event.pos[1]//10)*10))
     pos.set("color_1", str(color[0]))
     pos.set("color_2", str(color[1]))
     pos.set("color_3", str(color[2]))
     pos.set("size", str(size))
-    postion = (event.pos[0], event.pos[1])
+    postion = (round(event.pos[0]//10)*10, round(event.pos[1]//10)*10)
     new_drawing = drawing_obj(postion, color)
     return new_drawing
 
