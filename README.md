@@ -13,7 +13,11 @@ Draw an image in image_maker.py and hit enter to activate the menu options on th
 s key saves the xml with out generating  
 g key removes the grid  
 click the numbers on the right to change the RGB color palette  
-click the size number to change the size of the paint brush  
+click the size number to change the size of the paint brush 
+
+crtl+z undos
+
+e sets the sotware into erase mode
 
 Known issues:  
 
