@@ -6,6 +6,7 @@ from tkinter import simpledialog
 import pygame
 import pygame_textinput
 import sprite_micro_gen
+import erase
 
 
 class drawing_obj:
@@ -79,12 +80,15 @@ def main():
     click_number_string = "click numbers to"
     click_number_string_2 = "assign RGB value"
     brush_string = "Brush Size"
+    erase_string = "Press 'e' to erase"
+    erase_notification = "ERASE MODE ON"
     # locations and loading for strings
     pause_text_location = (0, 360)
     paused_text_pos = (0, 260)
     paused_text_color = (255, 0, 0)
     paused_text_color_off = (255, 255, 255)
     brush_text_location = (0, 290)
+    erase_text_location = (0, 325)
     pause_text = pause_font.render(pause_string, True, paused_text_color)
     pause_text_2 = pause_font.render(pause_string_2, True, paused_text_color)
     paused_text = pause_font.render(paused_string, True, paused_text_color)
@@ -93,17 +97,23 @@ def main():
     click_num_2 = pause_font.render(click_number_string_2, True, paused_text_color)
     saved_text = pause_font.render(save_string, True, paused_text_color)
     brush_text = pause_font.render(brush_string, True, paused_text_color)
+    erase_text = pause_font.render(erase_string, True, paused_text_color)
+    erase_text_on = pause_font.render(erase_notification, True, paused_text_color)
     # background
     background_color = [(255, 255, 255), (0, 0, 0), (50, 90, 168), (46, 135, 85)]
     b_g=0
     screen.fill(background_color[b_g])
 
-    menu = False
+    
     rect_selected = -1
     grid_toggle = True
     create_images_button = pygame.Rect(5, 800, 160, 50)
     button_string = "Create Images"
     button_text = pause_font.render(button_string, True, (0, 0, 0))
+
+    #modes
+    menu = False
+    erase_mode = False
 
     while not done:
 
@@ -129,11 +139,20 @@ def main():
                 screen.blit(click_num, (0, 420))
                 screen.blit(click_num_2, (0, 450))
                 screen.blit(saved_text, (0, 620))
+                
             screen.blit(color_fonts[0], positions[0])
             screen.blit(color_fonts[1], positions[1])
             screen.blit(color_fonts[2], positions[2])
             screen.blit(brush_text, brush_text_location)
             screen.blit(paint_brush_font, positions[4])
+            if not erase_mode:
+                screen.blit(erase_text, erase_text_location)
+            if erase_mode:
+                screen.blit(erase_text_on, erase_text_location)
+            
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_e:
+                erase_mode = not erase_mode
+ 
 
             # saving
             if event.type == pygame.KEYDOWN:
@@ -145,7 +164,7 @@ def main():
             screen.blit(button_text, (10, 810))
             if event.type == pygame.QUIT:  # User clicked close
                 done = True
-            if not menu:
+            if not menu and not erase_mode:
                 if event.type == pygame.MOUSEBUTTONDOWN:  # Mouse button pressed
                     mouse_down = True
                     if event.pos[0] > 200 and event.pos[0] < 1200:
@@ -182,6 +201,15 @@ def main():
                         drawning_saving_array = undo(
                             drawning_saving_array, xml_root, screen, background_color
                         )
+            elif erase_mode:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_down = True
+                    print("erase mode")
+                    erase.erase_at_pos_on_canvas(screen, background_color[b_g], event, paint_brush_size)
+                if event.type == pygame.MOUSEMOTION and mouse_down:
+                    erase.erase_at_pos_on_canvas(screen, background_color[b_g], event, paint_brush_size)
+                elif event.type == pygame.MOUSEBUTTONUP:  # Mouse button released
+                    mouse_down = False 
             # Update text inputs
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN and not menu:
@@ -344,7 +372,7 @@ def brush_size_select():
 
 def paint_on_canvas(color, size, event, xml_root, screen):
     # Draw at mouse position with right click down
-    print(pygame.draw.rect(screen, color, (round(event.pos[0]//10)*10, round(event.pos[1]//10)*10, size, size)))
+    pygame.draw.rect(screen, color, (round(event.pos[0]//10)*10, round(event.pos[1]//10)*10, size, size))
 
     # Add the drawing details to xml
     pos = ET.SubElement(xml_root, "sprite")
