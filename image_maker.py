@@ -208,9 +208,11 @@ def main():
                     print("erase mode")
                     erase.erase_at_pos_on_canvas(screen, background_color[b_g], event, paint_brush_size)
                     erase.erase_at_pos_in_xml(xml_root, event)
+                    drawning_saving_array = erase.erase_at_pos_in_list(drawning_saving_array, event)
                 if event.type == pygame.MOUSEMOTION and mouse_down:
                     erase.erase_at_pos_on_canvas(screen, background_color[b_g], event, paint_brush_size)
                     erase.erase_at_pos_in_xml(xml_root, event)
+                    drawning_saving_array = erase.erase_at_pos_in_list(drawning_saving_array, event)
                 elif event.type == pygame.MOUSEBUTTONUP:  # Mouse button released
                     mouse_down = False 
             # Update text inputs
