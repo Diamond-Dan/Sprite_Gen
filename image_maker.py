@@ -199,7 +199,7 @@ def main():
                         pygame.key.get_mods() & pygame.KMOD_CTRL
                     ):
                         drawning_saving_array = undo(
-                            drawning_saving_array, xml_root, screen, background_color
+                            drawning_saving_array, xml_root, screen, background_color[b_g]
                         )
             #erase_mode            
             elif erase_mode:
@@ -212,7 +212,7 @@ def main():
                 if event.type == pygame.MOUSEMOTION and mouse_down:
                     erase.erase_at_pos_on_canvas(screen, background_color[b_g], event, paint_brush_size)
                     erase.erase_at_pos_in_xml(xml_root, event)
-                    drawning_saving_array = erase.erase_at_pos_in_list(drawning_saving_array, event)
+                    drawning_saving_array= erase.erase_at_pos_in_list(drawning_saving_array, event)
                 elif event.type == pygame.MOUSEBUTTONUP:  # Mouse button released
                     mouse_down = False 
             # Update text inputs
@@ -324,7 +324,7 @@ def main():
 
 
 def undo(drawing_saving_array, xml_file, screen, background_color):
-    if len(drawing_saving_array) == 0:
+    if len(drawing_saving_array) == 0 or drawing_saving_array is None:
         return drawing_saving_array
     else:
         last_drawing = drawing_saving_array[-1]
@@ -393,8 +393,9 @@ def paint_on_canvas(color, size, event, xml_root, screen):
 
 
 def redraw(drawing_saving_array, screen):
-    for drawing in drawing_saving_array:
-        pygame.draw.rect(screen, (drawing.color_1, drawing.color_2, drawing.color_3), (drawing.x, drawing.y, 10, 10))
+    if drawing_saving_array is not None:
+        for drawing in drawing_saving_array:
+            pygame.draw.rect(screen, (drawing.color_1, drawing.color_2, drawing.color_3), (drawing.x, drawing.y, 10, 10))
     return screen
 
 
