@@ -55,7 +55,8 @@ We can also extend out the length of time the animation takes by adding many ext
 This takes some time even on fast computer and likely shouldn't be done till improvements are implemented inthe way images are generated.  
 I can't even upload the file due to the being over the github size limit.  
 
-![image](https://github.com/user-attachments/assets/694f8bf5-69b6-4348-b567-a8137f667f3d)
+![image](https://github.com/user-attachments/assets/baaa6d2d-d344-4bd6-9c5a-8da95f01e552)
+
 
 
 
