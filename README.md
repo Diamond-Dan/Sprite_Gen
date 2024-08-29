@@ -37,3 +37,26 @@ Images can be regenerated with out rerunning the program through either sprite_m
 OR  
   
 Images can be generated through calls to the flask server in image_gen_api.py  
+
+
+Lets look at some example usage   
+
+The orginal generation from the painting canvas looks like this using the "exploding" animation  
+
+![spaceship1 xmlexplodeseed_3pixel_1300frames_250](https://github.com/user-attachments/assets/b5363f69-f589-49b3-a927-e7938324b343)  
+
+
+But we can regenerate that file a variety of ways, by changing where we start our explosion we can change where the pixels move, moving the start generation to x:1 y:1 results in:  
+
+
+![splocexplodeseed_3pixel_1300frames_250](https://github.com/user-attachments/assets/2c5d4ca4-9b54-4b43-b328-44ee65a1b463)
+
+We can also extend out the length of time the animation takes by adding many extra frames moving from 250 frames to 1000 frames this.  
+This takes some time even on fast computer and likely shouldn't be done till improvements are implemented inthe way images are generated.  
+I can't even upload the file due to the being over the github size limit.  
+
+![image](https://github.com/user-attachments/assets/694f8bf5-69b6-4348-b567-a8137f667f3d)
+
+
+
+
