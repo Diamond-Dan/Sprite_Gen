@@ -57,7 +57,7 @@ def main():
     paint_brush_size = 10
     paint_brush_font = font.render(str(paint_brush_size), True, (255, 0, 0))
     # Set initial positions for the inputs
-    positions = [(10, 10), (10, 60), (10, 110), (10, 160), (10, 310)]
+    positions = [(10, 10), (10, 60), (10, 110), (10, 160), (10, 295)]
 
     color_fonts = [0, 0, 0]
     for i, color_font in enumerate(color_fonts):
@@ -84,10 +84,10 @@ def main():
     erase_notification = "ERASE MODE ON"
     # locations and loading for strings
     pause_text_location = (0, 360)
-    paused_text_pos = (0, 260)
+    paused_text_pos = (0, 250)
     paused_text_color = (255, 0, 0)
     paused_text_color_off = (255, 255, 255)
-    brush_text_location = (0, 290)
+    brush_text_location = (0, 270)
     erase_text_location = (0, 325)
     pause_text = pause_font.render(pause_string, True, paused_text_color)
     pause_text_2 = pause_font.render(pause_string_2, True, paused_text_color)
@@ -371,7 +371,7 @@ def color_select():
 def brush_size_select():
     root = tk.Tk()
     root.withdraw()  # Hide the main window
-    new_size = simpledialog.askinteger("Brush Size", "Enter a new brush size (1-10):")
+    new_size = simpledialog.askinteger("Brush Size", "Enter a new brush size (min 5):")
     return new_size
 
 
