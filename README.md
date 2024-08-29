@@ -11,7 +11,7 @@ Find generated image in folder images and gifs in gifs
 Features: 
 Draw an image in image_maker.py and hit enter to activate the menu options on the left side. Then click create images to draw the images and the gifs 
 Commands:
-WHILE UNPASUSED
+WHILE UNPAUSED
 Click with the right mouse button or click and draw to draw
 s key saves the xml with out generating  
 g key removes the grid  
