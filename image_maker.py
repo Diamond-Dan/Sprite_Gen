@@ -329,7 +329,7 @@ def undo(drawing_saving_array, xml_file, screen, background_color):
     else:
         last_drawing = drawing_saving_array[-1]
         pygame.draw.rect(
-            screen, background_color, (last_drawing.x, last_drawing.y, 10, 10)
+            screen, background_color, (last_drawing.x, last_drawing.y, last_drawing.size, last_drawing.size)
         )
         drawing_saving_array.pop()
         xml_file.remove(xml_file[-1])
