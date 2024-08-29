@@ -9,7 +9,8 @@ Find generated image in folder images and gifs in gifs
 
 
 Features: 
-Draw an image in image_maker.py and hit enter to activate the menu options on the left side. Then click create images to draw the images and the gifs 
+Draw an image in image_maker.py and hit enter to activate the menu options on the left side. Then click create images to draw the images and the gifs   
+  
 Commands:  
   
 WHILE UNPASUSED:  
