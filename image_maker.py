@@ -10,7 +10,7 @@ import erase
 
 
 class drawing_obj:
-    def __init__(self, pos, color_obj):
+    def __init__(self, pos, color_obj, size):
         self.pos = pos
         self.x = pos[0]
         self.y = pos[1]
@@ -18,7 +18,7 @@ class drawing_obj:
         self.color_1 = color_obj[0]
         self.color_2 = color_obj[1]
         self.color_3 = color_obj[2]
-
+        self.size = size
 
 def main():
     # Initialize Pygame
@@ -388,14 +388,14 @@ def paint_on_canvas(color, size, event, xml_root, screen):
     pos.set("color_3", str(color[2]))
     pos.set("size", str(size))
     postion = (round(event.pos[0]//10)*10, round(event.pos[1]//10)*10)
-    new_drawing = drawing_obj(postion, color)
+    new_drawing = drawing_obj(postion, color, size)
     return new_drawing
 
 
 def redraw(drawing_saving_array, screen):
     if drawing_saving_array is not None:
         for drawing in drawing_saving_array:
-            pygame.draw.rect(screen, (drawing.color_1, drawing.color_2, drawing.color_3), (drawing.x, drawing.y, 10, 10))
+            pygame.draw.rect(screen, (drawing.color_1, drawing.color_2, drawing.color_3), (drawing.x, drawing.y, drawing.size, drawing.size))
     return screen
 
 
