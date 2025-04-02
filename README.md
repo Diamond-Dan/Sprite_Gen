@@ -26,6 +26,8 @@ WHILE PAUSED OR UNPAUSED
 e sets the sotware into erase mode  
 b key changes the background color of the grid  
 
+
+
 Known issues:  
 
 If the correct folder structure is not created, it will not run.    
@@ -35,11 +37,13 @@ putting in a number that is too large for the RGB color will crash the program
 Images can be regenerated with out rerunning the program through either sprite_micro_gen.py using the text based interface  
   
 OR  
-  
+ 
+
 Images can be generated through calls to the flask server in image_gen_api.py  
 
 
 Lets look at some example usage   
+![spritegen](https://github.com/user-attachments/assets/e11c5aad-6fdc-4e62-a567-c268044f0918)
 
 The orginal generation from the painting canvas looks like this using the "exploding" animation  
 
